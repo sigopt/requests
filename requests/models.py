@@ -9,6 +9,7 @@ This module contains the primary objects that power Requests.
 
 import datetime
 import sys
+import warnings
 
 # Import encoding now, to avoid implicit import later.
 # Implicit import within threads may cause LookupError when standard library is in a ZIP,
@@ -38,7 +39,7 @@ from .utils import (
 from .compat import (
     Callable, Mapping,
     cookielib, urlunparse, urlsplit, urlencode, str, bytes,
-    is_py2, chardet, builtin_str, basestring)
+    is_py2, builtin_str, basestring)
 from .compat import json as complexjson
 from .status_codes import codes
 
@@ -723,8 +724,8 @@ class Response(object):
 
     @property
     def apparent_encoding(self):
-        """The apparent encoding, provided by the chardet library."""
-        return chardet.detect(self.content)['encoding']
+        warnings.warn("Returning 'utf-8' because chardet was removed", RuntimeWarning)
+        return 'utf-8'
 
     def iter_content(self, chunk_size=1, decode_unicode=False):
         """Iterates over the response data.  When stream=True is set on the
